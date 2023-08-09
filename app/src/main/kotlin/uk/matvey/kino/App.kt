@@ -1,5 +1,7 @@
 package uk.matvey.kino
 
+import com.zaxxer.hikari.HikariConfig
+import com.zaxxer.hikari.HikariDataSource
 import io.ktor.http.HttpStatusCode.Companion.Created
 import io.ktor.http.HttpStatusCode.Companion.NotFound
 import io.ktor.http.HttpStatusCode.Companion.OK
@@ -21,6 +23,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import mu.KotlinLogging
+import org.jooq.tools.JooqLogger
 import org.slf4j.event.Level
 import uk.matvey.kino.movies.Movie
 import uk.matvey.kino.movies.MovieRepo
@@ -30,7 +33,8 @@ import java.util.UUID.randomUUID
 private val log = KotlinLogging.logger("Kino App")
 
 fun main() {
-    val movieRepo = MovieRepo()
+    val dataSource = setupDataSource()
+    val movieRepo = MovieRepo(dataSource)
 
     log.info { "Starting Kino server" }
     embeddedServer(
@@ -72,3 +76,15 @@ data class CreateMovieRequest(
     val title: String,
     val year: Int
 )
+
+private fun setupDataSource(): HikariDataSource {
+    val hikariConfig = HikariConfig()
+    hikariConfig.jdbcUrl = "jdbc:postgresql://localhost:55000/postgres"
+    hikariConfig.username = "postgres"
+    hikariConfig.password = "postgres"
+    hikariConfig.driverClassName = "org.postgresql.Driver"
+
+    JooqLogger.globalThreshold(org.jooq.Log.Level.INFO)
+
+    return HikariDataSource(hikariConfig)
+}
