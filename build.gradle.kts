@@ -7,9 +7,10 @@ repositories {
     mavenCentral()
 }
 
-val kotlinLoggingVersion: String by project
-val jupiterVersion: String by project
 val assertJVersion: String by project
+val jupiterVersion: String by project
+val kotlinLoggingVersion: String by project
+val kotlinxSerializationVersion: String by project
 
 subprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
@@ -17,9 +18,10 @@ subprojects {
 
     dependencies {
         implementation("io.github.microutils:kotlin-logging:$kotlinLoggingVersion")
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerializationVersion")
 
-        testImplementation("org.junit.jupiter:junit-jupiter-engine:$jupiterVersion")
         testImplementation("org.assertj:assertj-core:$assertJVersion")
+        testImplementation("org.junit.jupiter:junit-jupiter-engine:$jupiterVersion")
     }
 
     repositories {
