@@ -1,15 +1,31 @@
 plugins {
     kotlin("jvm") version "1.9.0"
     kotlin("plugin.serialization") version "1.9.0"
+    id("org.flywaydb.flyway") version "9.21.1"
+}
+
+val postgresDriverVersion: String by project
+
+dependencies {
+    runtimeOnly("org.postgresql:postgresql:$postgresDriverVersion")
 }
 
 repositories {
     mavenCentral()
 }
 
-val kotlinLoggingVersion: String by project
-val jupiterVersion: String by project
+flyway {
+    url = project.properties["kino.flyway.url"].toString()
+    user = project.properties["kino.flyway.user"].toString()
+    password = project.properties["kino.flyway.password"].toString()
+    schemas = arrayOf("kino")
+    driver = "org.postgresql.Driver"
+}
+
 val assertJVersion: String by project
+val jupiterVersion: String by project
+val kotlinLoggingVersion: String by project
+val kotlinxSerializationVersion: String by project
 
 subprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
@@ -17,9 +33,10 @@ subprojects {
 
     dependencies {
         implementation("io.github.microutils:kotlin-logging:$kotlinLoggingVersion")
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerializationVersion")
 
-        testImplementation("org.junit.jupiter:junit-jupiter-engine:$jupiterVersion")
         testImplementation("org.assertj:assertj-core:$assertJVersion")
+        testImplementation("org.junit.jupiter:junit-jupiter-engine:$jupiterVersion")
     }
 
     repositories {
