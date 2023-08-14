@@ -3,6 +3,7 @@ package uk.matvey.kino.movies
 import org.jooq.impl.DSL.field
 import org.jooq.impl.DSL.table
 import uk.matvey.kino.persisntence.Repo
+import java.time.Year
 import java.util.UUID
 import javax.sql.DataSource
 
@@ -13,7 +14,18 @@ class MovieRepo(ds: DataSource) : Repo(ds) {
             ctx.insertInto(MOVIES)
                 .set(ID, movie.id)
                 .set(TITLE, movie.title)
-                .set(YEAR, movie.year)
+                .set(YEAR, movie.year.value)
+                .execute()
+            requireNotNull(find(movie.id))
+        }
+    }
+
+    fun update(movie: Movie): Movie {
+        return withDslCtx { ctx ->
+            ctx.update(MOVIES)
+                .set(TITLE, movie.title)
+                .set(YEAR, movie.year.value)
+                .where(ID.eq(movie.id))
                 .execute()
             requireNotNull(find(movie.id))
         }
@@ -28,7 +40,7 @@ class MovieRepo(ds: DataSource) : Repo(ds) {
                     Movie(
                         record.get(ID),
                         record.get(TITLE),
-                        record.get(YEAR)
+                        Year.of(record.get(YEAR))
                     )
                 }
         }

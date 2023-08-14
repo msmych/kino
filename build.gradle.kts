@@ -23,6 +23,7 @@ flyway {
 }
 
 val kotlinLoggingVersion: String by project
+val kotlinxSerializationVersion: String by project
 val jupiterVersion: String by project
 val assertJVersion: String by project
 
@@ -32,6 +33,11 @@ subprojects {
 
     dependencies {
         implementation("io.github.microutils:kotlin-logging:$kotlinLoggingVersion")
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerializationVersion")
+
+        if (project.name != "common") {
+            implementation(project(":common"))
+        }
 
         testImplementation("org.junit.jupiter:junit-jupiter-engine:$jupiterVersion")
         testImplementation("org.assertj:assertj-core:$assertJVersion")
