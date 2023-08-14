@@ -7,23 +7,19 @@ Movies library app
 Run a Postgres DB, for example:
 ```shell
 docker run --name kino-pg \
-  -e POSTGRES_DB=postgres \
-  -e POSTGRES_USER=postgres \
-  -e POSTGRES_PASSWORD=postgres \
-  -p 55000:5432 \
+  -e POSTGRES_DB=<db-name> \
+  -e POSTGRES_USER=<user> \
+  -e POSTGRES_PASSWORD=<password> \
+  -p <db-port>:5432 \
   -d postgres
 ```
 
-With running Postgres, run the following SQL script:
-```postgresql
-create schema if not exists kino;
-
-create table if not exists kino.movies
-(
-    id    uuid   not null primary key,
-    title text   not null,
-    year  bigint not null
-);
+With running Postgres, run Flyway migrations:
+```shell
+./gradlew flywayMigrate \
+  -Pkino.flyway.url=<jdbc-url> \
+  -Pkino.flyway.user=<user> \
+  -Pkino.flyway.password=<password>
 ```
 
 Then run the app:
@@ -33,6 +29,13 @@ Then run the app:
 
 With server running, try making requests:
 ```shell
-curl -X POST -H "Content-Type: application/json" -d '{"title": "Barbie", "year": 2023}' localhost:8080/movies
-curl localhost:8080/movies/<id>
+# create movie with given title and year
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"title": "Barbie", "year": 2023}' \
+  localhost:8000/movies
+# returns created movie id
+
+# get movie by id
+curl localhost:8000/movies/<id>
 ```
