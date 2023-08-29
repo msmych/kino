@@ -1,4 +1,3 @@
-import io.ktor.plugin.features.DockerPortMapping
 import io.ktor.plugin.features.JreVersion.JRE_17
 
 plugins {
@@ -30,6 +29,5 @@ ktor {
         jreVersion.set(JRE_17)
         localImageName.set("kino")
         imageTag.set("0.0.1")
-        portMappings.add(DockerPortMapping(8000, 8080))
     }
 }
