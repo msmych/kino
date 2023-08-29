@@ -37,7 +37,7 @@ curl -X POST \
 # returns created movie id
 
 # update movie title
-curl -X POST \
+curl -X PATCH \
   -H "Content-Type: application/json" \
   -d '{"title": "Oppenheimer"}' \
   localhost:8000/api/movies/<id>

@@ -1,5 +1,4 @@
 import io.ktor.plugin.features.DockerPortMapping
-import io.ktor.plugin.features.JreVersion
 import io.ktor.plugin.features.JreVersion.JRE_17
 
 plugins {
@@ -10,7 +9,6 @@ val logbackVersion: String by project
 
 dependencies {
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
-
     implementation("io.ktor:ktor-serialization-kotlinx-json")
     implementation("io.ktor:ktor-server-call-logging-jvm")
     implementation("io.ktor:ktor-server-content-negotiation")

@@ -39,8 +39,8 @@ subprojects {
             implementation(project(":common"))
         }
 
-        testImplementation("org.junit.jupiter:junit-jupiter-engine:$jupiterVersion")
         testImplementation("org.assertj:assertj-core:$assertJVersion")
+        testImplementation("org.junit.jupiter:junit-jupiter-engine:$jupiterVersion")
     }
 
     repositories {

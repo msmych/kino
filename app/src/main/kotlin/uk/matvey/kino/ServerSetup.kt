@@ -24,7 +24,7 @@ import uk.matvey.kino.routing.movieRouting
 
 fun setupServer(services: Services) = embeddedServer(
     factory = Netty,
-    port = 8080,
+    port = 8000,
     host = "localhost",
     module = { setupServerModule(services) }
 )
